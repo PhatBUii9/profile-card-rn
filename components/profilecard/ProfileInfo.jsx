@@ -1,5 +1,5 @@
 import { View, Text, Image, StyleSheet } from "react-native";
-import Divider from "./commonUI/Divider";
+import Divider from "../commonUI/Divider";
 
 const ProfileInfo = () => {
   return (

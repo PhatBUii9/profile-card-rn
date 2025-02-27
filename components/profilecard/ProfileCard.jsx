@@ -3,6 +3,11 @@ import ProfileImage from "./ProfileImage";
 import ProfileInfo from "./ProfileInfo";
 import SocialLinks from "./SocialLinks";
 import { LinearGradient } from "expo-linear-gradient";
+import { Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get("window");
+const CARD_WIDTH = width * 0.9; // 90% of the screen width
+const CARD_HEIGHT = height * 0.6; // 60% of the screen height
 
 const ProfileCard = () => {
   return (
@@ -28,8 +33,8 @@ styles = StyleSheet.create({
     backgroundColor: "#f0f0f0",
   },
   card: {
-    width: 350,
-    height: 500,
+    width: CARD_WIDTH,
+    height: CARD_HEIGHT,
     backgroundColor: "#fff",
     borderRadius: 30,
     overflow: "hidden",

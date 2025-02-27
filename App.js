@@ -1,18 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import ProfileCard from './components/ProfileCard';
+import { StyleSheet, SafeAreaView } from 'react-native';
+import ProfileCard from './components/profilecard/ProfileCard';
 
 export default function App() {
   return (
-    <ProfileCard />
+      <ProfileCard />
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
