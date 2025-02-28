@@ -7,7 +7,7 @@ import { Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 const CARD_WIDTH = width * 0.9; // 90% of the screen width
-const CARD_HEIGHT = height * 0.6; // 60% of the screen height
+const CARD_HEIGHT = height * 0.7; // 80% of the screen height
 
 const ProfileCard = () => {
   return (
@@ -38,7 +38,9 @@ styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 30,
     overflow: "hidden",
-    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "space-between", // pushes items to top & bottom
+    alignItems: "center", // horizontally center items
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 3 },

@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   // The imageContainer uses absolute positioning to overlap the top section of the card.
   imageContainer: {
     position: "absolute",
-    top: "20%", // Adjust to control how much the image overlaps the background
+    top: "25%", // Adjust to control how much the image overlaps the background
     backgroundColor: "#FFF",
     borderRadius: 75,
     // Shadow for elevation effect on both platforms
