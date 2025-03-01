@@ -8,89 +8,129 @@ import {
   StyleSheet,
 } from "react-native";
 import Divider from "../commonUI/Divider";
+import EditIcon from "../commonUI/EditIcon";
 
 const ProfileInfo = () => {
+  // Profile state containing all profile fields
   const [profile, setProfile] = useState({
-    profileName: "",
-    occupation: "",
-    description: "",
+    profileName: "Name",
+    occupation: "Occupation",
+    description: "Description",
   });
 
-  const [isEdit, setIsEdit] = useState(false);
+  // Edit modes for each field
+  const [editModes, setEditModes] = useState({
+    profileName: false,
+    occupation: false,
+    description: false,
+  });
 
-  function handleNameChange(text) {
-    setProfile({
-      ...profile,
-      profileName: text,
-    });
-  }
+  const isEdit =
+    editModes.profileName || editModes.occupation || editModes.description;
 
-  function handleOccupationChange(text) {
-    setProfile({
-      ...profile,
-      occupation: text,
-    });
-  }
+  // Toggle the edit mode for a given field
+  const toggleEdit = (field) => {
+    setEditModes((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
 
-  function handleDescriptionChange(text) {
-    setProfile({
-      ...profile,
-      description: text,
-    });
-  }
+  // Update the profile field value
+  const updateField = (field, text) => {
+    setProfile((prev) => ({ ...prev, [field]: text }));
+  };
 
-  if (isEdit) {
-    return (
-      <KeyboardAvoidingView style={styles.container} behavior="height">
-        <TextInput
-          style={[
-            styles.text,
-            styles.profileName,
-            styles.inputField,
-            { height: 60 },
-          ]}
-          onChangeText={handleNameChange}
-          value={profile.profileName}
-          placeholder="Name"
-          maxLength={15}
-          numberOfLines={2}
-        />
-        <TextInput
-          style={[styles.text, styles.occupation, styles.inputField]}
-          onChangeText={handleOccupationChange}
-          value={profile.occupation}
-          placeholder="Occupation"
-          maxLength={20}
-          multiline={false}
-        />
-        <Divider />
-        <TextInput
-          style={[styles.text, styles.description, styles.descriptionInput]}
-          onChangeText={handleDescriptionChange}
-          value={profile.description}
-          placeholder="Description"
-          maxLength={100}
-          multiline={true}
-          numberOfLines={3}
-          textAlignVertical="top"
-        />
-        <Button title="Save" onPress={() => setIsEdit(!isEdit)} />
-      </KeyboardAvoidingView>
-    );
-  }
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <Text style={[styles.text, styles.profileName]} numberOfLines={2}>
-        {profile.profileName || "Name"}
-      </Text>
-      <Text style={[styles.text, styles.occupation]}>
-        {profile.occupation || "Occupation"}
-      </Text>
+      {/* Name Field */}
+      <View style={styles.fieldContainer}>
+        {editModes.profileName ? (
+          <TextInput
+            style={[styles.text, styles.profileName, styles.inputField]}
+            onChangeText={(text) => updateField("profileName", text)}
+            value={profile.profileName}
+            placeholder="Name"
+            maxLength={20}
+          />
+        ) : (
+          <Text style={[styles.text, styles.profileName]} numberOfLines={2}>
+            {profile.profileName}
+          </Text>
+        )}
+        {!isEdit && (
+          <View style={styles.iconContainer}>
+            <EditIcon onPress={() => toggleEdit("profileName")} />
+          </View>
+        )}
+      </View>
+
+      {/* Occupation Field */}
+      <View style={styles.fieldContainer}>
+        {editModes.occupation ? (
+          <TextInput
+            style={[styles.text, styles.occupation, styles.inputField]}
+            onChangeText={(text) => updateField("occupation", text)}
+            value={profile.occupation}
+            placeholder="Occupation"
+            maxLength={20}
+          />
+        ) : (
+          <Text style={[styles.text, styles.occupation]}>
+            {profile.occupation}
+          </Text>
+        )}
+        {!isEdit && (
+          <View style={styles.iconContainer}>
+            <EditIcon onPress={() => toggleEdit("occupation")} />
+          </View>
+        )}
+      </View>
+
       <Divider />
-      <Text style={[styles.text, styles.description]}>
-        {profile.description || "Description"}
-      </Text>
-      <Button title="Edit" onPress={() => setIsEdit(!isEdit)} />
+
+      {/* Description Field */}
+      <View style={styles.fieldContainer}>
+        {editModes.description ? (
+          <TextInput
+            style={[
+              styles.text,
+              styles.description,
+              styles.inputField,
+              styles.descriptionInput,
+            ]}
+            onChangeText={(text) => updateField("description", text)}
+            value={profile.description}
+            placeholder="Description"
+            maxLength={100}
+            multiline={true}
+            numberOfLines={3}
+            textAlignVertical="top"
+          />
+        ) : (
+          <Text style={[styles.text, styles.description]}>
+            {profile.description}
+          </Text>
+        )}
+        {!isEdit && (
+          <View style={styles.iconContainer}>
+            <EditIcon onPress={() => toggleEdit("description")} />
+          </View>
+        )}
+      </View>
+
+      {/* Global Save Button (Optional) */}
+      {(editModes.profileName ||
+        editModes.occupation ||
+        editModes.description) && (
+        <Button
+          title="Save"
+          onPress={() =>
+            setEditModes({
+              profileName: false,
+              occupation: false,
+              description: false,
+            })
+          }
+        />
+      )}
     </KeyboardAvoidingView>
   );
 };
@@ -98,17 +138,24 @@ const ProfileInfo = () => {
 const styles = StyleSheet.create({
   container: {
     width: "60%",
-    justifyContent: "center",
     alignItems: "center",
     marginTop: 60,
-    paddingBottom: 20, // optional additional space
+    paddingBottom: 20,
+  },
+  fieldContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "space-between",
+    marginVertical: 5,
   },
   text: {
+    flex: 1,
     marginVertical: 5,
     textAlign: "center",
   },
   profileName: {
-    fontSize: 40,
+    fontSize: 35,
     fontWeight: "bold",
   },
   occupation: {
@@ -118,19 +165,17 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 12,
   },
-  // Fixed height for single-line inputs to prevent expansion.
   inputField: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    paddingHorizontal: 5,
-  },
-  // Fixed height for the multiline description field.
-  descriptionInput: {
     height: 60,
     borderWidth: 1,
     borderColor: "#ccc",
     paddingHorizontal: 5,
+  },
+  descriptionInput: {
+    height: 60,
+  },
+  iconContainer: {
+    marginLeft: 10, // Add some space to the left of the icon
   },
 });
 
